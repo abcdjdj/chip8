@@ -1,4 +1,4 @@
-SOURCES = chip8.cpp
+SOURCES = chip8.cpp opcodes.cpp
 
 # Default target, for now
 TARGET = chip8-ncurses
@@ -9,7 +9,21 @@ endif
 
 CXX = g++
 LD = ld
-CXXFLAGS = -Wall -Werror -g -O0
+CXXFLAGS = -Wall -O0
+
+# 8XY shift hack
+SHIFT_HACK = true
+
+# Debugging
+DEBUG = false
+
+ifeq ($(DEBUG),true)
+	CXXFLAGS += -g
+endif
+
+ifeq ($(SHIFT_HACK),true)
+	CXXFLAGS += -DSHIFT_HACK
+endif
 
 ifeq ($(TARGET),chip8-ncurses)
 	LDFLAGS = -lncursesw
