@@ -120,6 +120,9 @@ void keypress_handler(sf::Event &event, CHIP8 &mychip) {
 		mychip.key[0xB] = 1;
 	else if(key_press == sf::Keyboard::Key::V)
 		mychip.key[0xF] = 1;
+
+	else if(key_press == sf::Keyboard::Key::Escape)
+		exit(EXIT_SUCCESS);
 }
 
 void keyrelease_handler(sf::Event &event, CHIP8 &mychip) {
