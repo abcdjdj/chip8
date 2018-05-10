@@ -350,7 +350,9 @@ void CHIP8::reg_dump_FX55(word opcode) {
 	X = (opcode & 0x0F00) >> 8;
 	for(int i=0; i<=X; ++i)
 		memory[I+i] = V[i];
+#ifdef FX55_HACK
 	I += X + 1;
+#endif
 	pc += 2;
 }
 
@@ -360,7 +362,9 @@ void CHIP8::reg_load_FX65(word opcode) {
 	Y = (opcode & 0x0F00) >> 8;
 	for(int i=0; i<=Y; ++i)
 		V[i] = memory[I+i];
+#ifdef FX55_HACK
 	I += Y + 1;
+#endif
 	pc += 2;
 }
 

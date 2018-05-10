@@ -10,6 +10,9 @@ CXXFLAGS = -Wall -Werror -O0
 # 8XY shift hack
 SHIFT_HACK = true
 
+# FX55/65 I register hack (true = increment I register)
+FX55_HACK = false
+
 # Debugging
 DEBUG = false
 
@@ -19,6 +22,10 @@ endif
 
 ifeq ($(SHIFT_HACK),true)
 	CXXFLAGS += -DSHIFT_HACK
+endif
+
+ifeq ($(FX55_HACK),true)
+	CXXFLAGS += -DFX55_HACK
 endif
 
 
