@@ -151,14 +151,15 @@ void CHIP8::sub_VX_VY_8XY5(word opcode) {
 
 void CHIP8::rshift_VX_VY_8XY6(word opcode) {
 
-	byte X, Y;
+	byte X;
 	X = (opcode & 0x0F00) >> 8;
-	Y = (opcode & 0x00F0) >> 4;
 
 #ifdef SHIFT_HACK
 	V[0xF] = V[X] & 0x01;
 	V[X] >>= 1;
 #else
+	byte Y = (opcode & 0x00F0) >> 4;
+
 	/* VX = VY = VY >> 1 */
 	V[0xF] = V[Y] & 0x01;
 	V[X] = V[Y] = V[Y] >> 1;
@@ -185,15 +186,16 @@ void CHIP8::sub_VY_VX_8XY7(word opcode) {
 
 void CHIP8::lshift_VX_VY_8XYE(word opcode) {
 
-	byte X, Y;
+	byte X;
 	X = (opcode & 0x0F00) >> 8;
-	Y = (opcode & 0x00F0) >> 4;
 
 #ifdef SHIFT_HACK
 	/* VX <<= 1 */
 	V[0xF] = V[X] >> 7;
 	V[X] <<= 1;
 #else
+	byte Y = (opcode & 0x00F0) >> 4;
+
 	/* VX = VY = VY << 1 */
 	V[0xF] = (V[Y] & 0x80) >> 7;
 	V[X] = V[Y] = V[Y] << 1;
