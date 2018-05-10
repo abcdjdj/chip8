@@ -1,11 +1,7 @@
 SOURCES = chip8.cpp opcodes.cpp
 
-# Default target, for now
-TARGET = chip8-ncurses
-
-ifeq ($(TARGET),chip8-ncurses)
-	SOURCES += main_ncurses.cpp
-endif
+# Target
+TARGET = chip8-sfml
 
 CXX = g++
 LD = ld
@@ -25,9 +21,17 @@ ifeq ($(SHIFT_HACK),true)
 	CXXFLAGS += -DSHIFT_HACK
 endif
 
+
+############# Target specific stuff ##############
 ifeq ($(TARGET),chip8-ncurses)
 	LDFLAGS = -lncursesw
+	SOURCES += main_ncurses.cpp
 endif
+ifeq ($(TARGET),chip8-sfml)
+	LDFLAGS = -lsfml-graphics -lsfml-window -lsfml-system
+	SOURCES += main_sfml.cpp
+endif
+#################################################
 
 OBJS = $(SOURCES:.cpp=.o)
 
