@@ -52,6 +52,8 @@ int main(int argc, char **argv)
 			draw_screen(window, mychip);
 
 			window.display();
+
+			mychip.gfx_update = false;
 		}
 	}
 
