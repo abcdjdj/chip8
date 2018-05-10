@@ -1,5 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <chrono>
+#include <thread>
 #include "chip8.h"
 
 #define RECTANGLE_WIDTH 12
@@ -23,6 +25,7 @@ int main(int argc, char **argv)
 		return 0;
 
 	sf::RenderWindow window(sf::VideoMode(RECTANGLE_WIDTH*64, RECTANGLE_HEIGHT*32), "Chip8 by abcdjdj");
+	sf::Clock clock;
 
 	// run the program as long as the window is open
 	while (window.isOpen())
@@ -45,14 +48,22 @@ int main(int argc, char **argv)
 		mychip.emulate_cycle();
 
 		if(mychip.gfx_update) {
-			// clear the window with black color
+
+			/* clear the window with black color */
 			window.clear(sf::Color::Black);
 
-			// draw stuff here
+			/* draw stuff here */
 			draw_screen(window, mychip);
+
+			/* Draw frames at 60 FPS */
+			auto diff = clock.getElapsedTime().asSeconds();
+			if(diff < 1.0/60) {
+				std::this_thread::sleep_for(std::chrono::milliseconds(1000/60 - (long)(diff*1000)));
+			}
 
 			window.display();
 
+			clock.restart();
 			mychip.gfx_update = false;
 		}
 	}
