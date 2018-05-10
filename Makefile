@@ -5,7 +5,7 @@ TARGET = chip8-sfml
 
 CXX = g++
 LD = ld
-CXXFLAGS = -Wall -O0
+CXXFLAGS = -Wall -Werror -O0
 
 # 8XY shift hack
 SHIFT_HACK = true
