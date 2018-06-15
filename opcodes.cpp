@@ -299,7 +299,7 @@ void CHIP8::skip_key_not_press_EXA1(word opcode) {
 void CHIP8::set_VX_delay_FX07(word opcode) {
 
 	byte X = (opcode & 0x0F00) >> 8;
-	V[X] = delay_timer;
+	V[X] = get_delay_timer();
 	pc += 2;
 }
 
@@ -323,14 +323,14 @@ void CHIP8::key_block_FX0A(word opcode) {
 void CHIP8::set_delay_VX_FX15(word opcode) {
 
 	byte X = (opcode & 0x0F00) >> 8;
-	delay_timer = V[X];
+	set_delay_timer(V[X]);
 	pc += 2;
 }
 
 void CHIP8::set_sound_VX_FX18(word opcode) {
 
 	byte X = (opcode & 0x0F00) >> 8;
-	sound_timer = V[X];
+	set_sound_timer(V[X]);
 	pc += 2;
 }
 

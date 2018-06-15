@@ -16,6 +16,7 @@
 */
 
 #include <cstdio>
+#include <cmath>
 #include "chip8.h"
 
 CHIP8::CHIP8() {
@@ -48,25 +49,37 @@ void CHIP8::emulate_cycle() {
 
 	word opcode = memory[pc] << 8 | memory[pc+1];
 	decode(opcode);
-
-	update_timers();
 }
 
-void CHIP8::update_timers() {
+byte CHIP8::get_delay_timer() {
 
-	if(delay_timer > 0)
-		--delay_timer;
+	auto now = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+	long long diff = now - delay_previous;
 
-	if(sound_timer > 0) {
-		--sound_timer;
-	}
+	double delay_timer_new = delay_timer - 60 * (diff/1000.0);
+	delay_timer_new = round(delay_timer_new);
+	if(delay_timer_new < 0)
+		delay_timer_new = 0;
+
+	return delay_timer_new;
+}
+
+void CHIP8::set_delay_timer(byte val) {
+
+	delay_previous = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+	delay_timer = val;
+}
+
+void CHIP8::set_sound_timer(byte val) {
+
+	/* TODO : Beep over here! */
+	sound_previous = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+	sound_timer = val;
 }
 
 void CHIP8::decode(word opcode) {
 
 	(this->*opcode_table[((opcode & 0xF000) >> 12)])(opcode);
-	//void (CHIP8::*ptr)(word) = opcode_table[(opcode & 0xF000)>>12];
-	//(this->*ptr)(opcode);
 }
 
 void CHIP8::zero_wrapper(word opcode) {

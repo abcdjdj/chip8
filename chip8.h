@@ -19,6 +19,7 @@
 #define __CHIP8_H__
 
 #include <cstdint>
+#include <chrono>
 
 #define MAX_FILE_SIZE (0xFFF - 0x200 + 1)
 
@@ -40,12 +41,16 @@ class CHIP8 {
 		/* Hardware timers */
 		byte delay_timer;
 		byte sound_timer;
+		long long delay_previous;
+		long long sound_previous;
+		void set_delay_timer(byte val);
+		void set_sound_timer(byte val);
+		byte get_delay_timer();
 
 		/* Stack */
 		word stack[16];
 		word sp;
 
-		void update_timers();
 		void decode(word opcode);
 
 		/* Opcodes */
