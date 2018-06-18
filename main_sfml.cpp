@@ -74,8 +74,9 @@ int main(int argc, char **argv)
 
 			/* Draw frames at 60 FPS */
 			auto diff = clock.getElapsedTime().asSeconds();
-			if(diff < 1.0/60) {
-				std::this_thread::sleep_for(std::chrono::milliseconds(1000/60 - (long)(diff*1000)));
+			long long sleep_time = 1000.0/60 - diff*1000;
+			if(sleep_time > 0) {
+				std::this_thread::sleep_for(std::chrono::milliseconds(sleep_time));
 			}
 
 			window.display();

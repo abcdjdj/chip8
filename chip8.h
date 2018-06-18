@@ -22,6 +22,7 @@
 #include <chrono>
 
 #define MAX_FILE_SIZE (0xFFF - 0x200 + 1)
+#define CLK_FREQ 500
 
 typedef uint8_t byte;
 typedef uint16_t word;
@@ -52,6 +53,7 @@ class CHIP8 {
 		word sp;
 
 		void decode(word opcode);
+		long long opcode_previous_time;
 
 		/* Opcodes */
 		void disp_clear_00E0(word opcode);

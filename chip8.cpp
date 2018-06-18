@@ -17,6 +17,7 @@
 
 #include <cstdio>
 #include <cmath>
+#include <thread>
 #include "chip8.h"
 
 CHIP8::CHIP8() {
@@ -46,6 +47,14 @@ CHIP8::CHIP8() {
 }
 
 void CHIP8::emulate_cycle() {
+
+	auto now = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+
+	/* Time elapsed since execution of previous cycle */
+	long long time_elapsed = now - opcode_previous_time;
+	opcode_previous_time = now;
+	if(time_elapsed < 1000/CLK_FREQ)
+		std::this_thread::sleep_for(std::chrono::milliseconds(1000/CLK_FREQ - time_elapsed));
 
 	word opcode = memory[pc] << 8 | memory[pc+1];
 	decode(opcode);
