@@ -26,7 +26,8 @@ CHIP8::CHIP8() {
 	sp = 0;
 
 	sound_timer = delay_timer = 0;
-	
+	opcode_previous_time = 0;
+
 	int i;
 	for(i=0; i<16; ++i)
 		key[i] = V[i] = 0;
