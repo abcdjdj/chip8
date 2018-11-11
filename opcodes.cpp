@@ -262,7 +262,7 @@ void CHIP8::draw_DXYN(word opcode) {
 	for(int yline = 0; yline < n; ++yline) {
 		pixel = memory[I + yline];
 		for(int xline = 0; xline < 8; ++xline) {
-			int index = x + xline + (y + yline)*64;
+			int index = (x + xline) % 64 + ((y + yline) % 32)*64;
 			int check_bit = (pixel & (0x80 >> xline));
 			/* If check_bit is non zero ==> XOR with 1 
 			 * Else do nothing (since x XOR 0 = x) */
