@@ -24,8 +24,7 @@
 #define RECTANGLE_WIDTH 12
 #define RECTANGLE_HEIGHT 12
 
-void keypress_handler(sf::Event &event, CHIP8 &mychip);
-void keyrelease_handler(sf::Event &event, CHIP8 &mychip);
+void key_handler(const sf::Event &event, CHIP8 &mychip, const byte &val);
 void draw_screen(sf::RenderWindow &window, CHIP8 &mychip);
 
 int main(int argc, char **argv)
@@ -55,9 +54,9 @@ int main(int argc, char **argv)
 			if (event.type == sf::Event::Closed) {
 				window.close();
 			} else if(event.type == sf::Event::KeyPressed) {
-				keypress_handler(event, mychip);
+				key_handler(event, mychip, 1);
 			} else if(event.type == sf::Event::KeyReleased) {
-				keyrelease_handler(event, mychip);
+				key_handler(event, mychip, 0);
 			}
 
 		}
@@ -109,89 +108,66 @@ void draw_screen(sf::RenderWindow &window, CHIP8 &mychip) {
 	}
 }
 
-void keypress_handler(sf::Event &event, CHIP8 &mychip) {
+void key_handler(const sf::Event &event, CHIP8 &mychip, const byte &val) {
 
 	sf::Keyboard::Key key_press = event.key.code;
-			
-	if(key_press == sf::Keyboard::Key::Num1)
-		mychip.key[0x1] = 1;
-	else if(key_press == sf::Keyboard::Key::Num2)
-		mychip.key[0x2] = 1;
-	else if(key_press == sf::Keyboard::Key::Num3)
-		mychip.key[0x3] = 1;
-	else if(key_press == sf::Keyboard::Key::Num4)
-		mychip.key[0xC] = 1;
-	
-	else if(key_press == sf::Keyboard::Key::Q)
-		mychip.key[0x4] = 1;
-	else if(key_press == sf::Keyboard::Key::W)
-		mychip.key[0x5] = 1;
-	else if(key_press == sf::Keyboard::Key::E)
-		mychip.key[0x6] = 1;
-	else if(key_press == sf::Keyboard::Key::R)
-		mychip.key[0xD] = 1;
-	
-	
-	else if(key_press == sf::Keyboard::Key::A)
-		mychip.key[0x7] = 1;
-	else if(key_press == sf::Keyboard::Key::S)
-		mychip.key[0x8] = 1;
-	else if(key_press == sf::Keyboard::Key::D)
-		mychip.key[0x9] = 1;
-	else if(key_press == sf::Keyboard::Key::F)
-		mychip.key[0xE] = 1;
+	switch(key_press) {
+		case sf::Keyboard::Key::Num1:
+			mychip.key[0x1] = val;
+			break;
+		case sf::Keyboard::Key::Num2:
+			mychip.key[0x2] = val;
+			break;
+                case sf::Keyboard::Key::Num3:
+			mychip.key[0x3] = val;
+			break;
+                case sf::Keyboard::Key::Num4:
+			mychip.key[0xC] = val;
+			break;
 
-	else if(key_press == sf::Keyboard::Key::Z)
-		mychip.key[0xA] = 1;
-	else if(key_press == sf::Keyboard::Key::X)
-		mychip.key[0x0] = 1;
-	else if(key_press == sf::Keyboard::Key::C)
-		mychip.key[0xB] = 1;
-	else if(key_press == sf::Keyboard::Key::V)
-		mychip.key[0xF] = 1;
+                case sf::Keyboard::Key::Q:
+                        mychip.key[0x4] = val;
+                        break;
+                case sf::Keyboard::Key::W:
+                        mychip.key[0x5] = val;
+                        break;
+                case sf::Keyboard::Key::E:
+                        mychip.key[0x6] = val;
+                        break;
+                case sf::Keyboard::Key::R:
+                        mychip.key[0xD] = val;
+                        break;
 
-	else if(key_press == sf::Keyboard::Key::Escape)
-		exit(EXIT_SUCCESS);
-}
+                case sf::Keyboard::Key::A:
+                        mychip.key[0x7] = val;
+                        break;
+                case sf::Keyboard::Key::S:
+                        mychip.key[0x8] = val;
+                        break;
+                case sf::Keyboard::Key::D:
+                        mychip.key[0x9] = val;
+                        break;
+                case sf::Keyboard::Key::F:
+                        mychip.key[0xE] = val;
+                        break;
 
-void keyrelease_handler(sf::Event &event, CHIP8 &mychip) {
+                case sf::Keyboard::Key::Z:
+                        mychip.key[0xA] = val;
+                        break;
+                case sf::Keyboard::Key::X:
+                        mychip.key[0x0] = val;
+                        break;
+                case sf::Keyboard::Key::C:
+                        mychip.key[0xB] = val;
+                        break;
+                case sf::Keyboard::Key::V:
+                        mychip.key[0xF] = val;
+                        break;
 
-	sf::Keyboard::Key key_press = event.key.code;
-			
-	if(key_press == sf::Keyboard::Key::Num1)
-		mychip.key[0x1] = 0;
-	else if(key_press == sf::Keyboard::Key::Num2)
-		mychip.key[0x2] = 0;
-	else if(key_press == sf::Keyboard::Key::Num3)
-		mychip.key[0x3] = 0;
-	else if(key_press == sf::Keyboard::Key::Num4)
-		mychip.key[0xC] = 0;
-	
-	else if(key_press == sf::Keyboard::Key::Q)
-		mychip.key[0x4] = 0;
-	else if(key_press == sf::Keyboard::Key::W)
-		mychip.key[0x5] = 0;
-	else if(key_press == sf::Keyboard::Key::E)
-		mychip.key[0x6] = 0;
-	else if(key_press == sf::Keyboard::Key::R)
-		mychip.key[0xD] = 0;
-	
-	
-	else if(key_press == sf::Keyboard::Key::A)
-		mychip.key[0x7] = 0;
-	else if(key_press == sf::Keyboard::Key::S)
-		mychip.key[0x8] = 0;
-	else if(key_press == sf::Keyboard::Key::D)
-		mychip.key[0x9] = 0;
-	else if(key_press == sf::Keyboard::Key::F)
-		mychip.key[0xE] = 0;
+                case sf::Keyboard::Key::Escape:
+                        exit(EXIT_SUCCESS);
 
-	else if(key_press == sf::Keyboard::Key::Z)
-		mychip.key[0xA] = 0;
-	else if(key_press == sf::Keyboard::Key::X)
-		mychip.key[0x0] = 0;
-	else if(key_press == sf::Keyboard::Key::C)
-		mychip.key[0xB] = 0;
-	else if(key_press == sf::Keyboard::Key::V)
-		mychip.key[0xF] = 0;
+                default:
+                        break;
+        }
 }
