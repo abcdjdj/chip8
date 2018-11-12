@@ -17,6 +17,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <array>
 #include <chrono>
 #include <thread>
 #include "chip8.h"
@@ -26,6 +27,7 @@
 
 void key_handler(const sf::Event &event, CHIP8 &mychip, const byte &val);
 void draw_screen(sf::RenderWindow &window, CHIP8 &mychip);
+void rectangles_init();
 
 int main(int argc, char **argv)
 {
@@ -41,6 +43,7 @@ int main(int argc, char **argv)
 		return 0;
 
 	sf::RenderWindow window(sf::VideoMode(RECTANGLE_WIDTH*64, RECTANGLE_HEIGHT*32), "Chip8 by abcdjdj");
+        rectangles_init();
 	sf::Clock clock;
 
 	// run the program as long as the window is open
@@ -88,24 +91,23 @@ int main(int argc, char **argv)
 	return 0;
 }
 
+std::array<sf::RectangleShape, 64*32> rectangle;
+
+void rectangles_init()
+{
+        for(int i = 0; i < 64 * 32; ++i) {
+                rectangle[i].setSize(sf::Vector2f(RECTANGLE_WIDTH, RECTANGLE_HEIGHT));
+                rectangle[i].setOutlineColor(sf::Color::White);
+                rectangle[i].setOutlineThickness(1);
+                rectangle[i].setPosition((i % 64) * RECTANGLE_WIDTH, (i / 64) * RECTANGLE_HEIGHT);
+        }
+}
+
 void draw_screen(sf::RenderWindow &window, CHIP8 &mychip) {
 
-	int i;
-
-	for(i=0; i<64*32; ++i) {
-		if(mychip.gfx[i] == 1) {
-			int x = i % 64;
-			int y = i / 64;
-
-			sf::RectangleShape rect;
-			rect.setSize(sf::Vector2f(RECTANGLE_WIDTH, RECTANGLE_HEIGHT));
-			rect.setOutlineColor(sf::Color::White);
-			rect.setOutlineThickness(1);
-			rect.setPosition(x * RECTANGLE_WIDTH, y * RECTANGLE_HEIGHT);
-
-			window.draw(rect);
-		}
-	}
+        for(int i = 0; i < 64 * 32; ++i)
+                if(mychip.gfx[i])
+                        window.draw(rectangle[i]);
 }
 
 void key_handler(const sf::Event &event, CHIP8 &mychip, const byte &val) {
